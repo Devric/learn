@@ -10,6 +10,14 @@ const matrix = [
     [0,1,0],
 ]
 
+function createMatrix(w,h) {
+    const matrix = []
+    while (h--) {
+        matrix.push(new Array(w).fill(0))
+    }
+    return matrix
+}
+
 function draw(player) {
     ctx.fillStyle = '#000'
     ctx.fillRect(0,0, canvas.width, canvas.height)
@@ -27,6 +35,10 @@ function drawMatrix(matrix, offset) {
     })
 }
 
+// 20 height
+// 12 wide
+const areana = createMatrix(12,20)
+// console.table(areana)
 const player = {
     pos : {x:5, y:2},
     matrix : matrix
