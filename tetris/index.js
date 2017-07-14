@@ -35,10 +35,24 @@ function drawMatrix(matrix, offset) {
     })
 }
 
+// this to trap the matrix within the arena
+function merge(arena, player) {
+    player.matrix.forEach((row,y)=>{
+        row.forEach( (value, x) => {
+            if (value !==0) {
+                arena[y+player.pos.y][x+player.pos.x] = value
+            }
+        })
+    })
+}
+
+// merge(arena,player)
+// console.log(arena)
+
 // 20 height
 // 12 wide
-const areana = createMatrix(12,20)
-// console.table(areana)
+const arena = createMatrix(12,20)
+// console.table(arena)
 const player = {
     pos : {x:5, y:2},
     matrix : matrix
