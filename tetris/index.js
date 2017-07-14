@@ -41,12 +41,16 @@ function update(time=0) {
 
     dropCounter += deltaTime
     if(dropCounter > dropInterval) {
-        player.pos.y++
-            dropCounter = 0
+        playerDrop()
     }
 
     draw(player)
     requestAnimationFrame(update)
+}
+
+function playerDrop() {
+    player.pos.y++
+    dropCounter = 0
 }
 
 document.addEventListener('keydown', e => {
@@ -57,6 +61,10 @@ document.addEventListener('keydown', e => {
     if(e.keyCode === 39) {
         player.pos.x++
     }
+    if(e.keyCode === 40) {
+        playerDrop()
+    }
+    
 })
 
 update()
