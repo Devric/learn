@@ -3,12 +3,27 @@ const ctx = canvas.getContext('2d')
 
 ctx.scale(20,20)
 
-
 const matrix = [
     [0,0,0],
     [1,1,1],
     [0,1,0],
 ]
+
+// merge(arena,player)
+// console.log(arena)
+
+// 20 height
+// 12 wide
+let arena = createMatrix(12,20)
+// console.table(arena)
+let player = {
+    pos : {x:5, y:2},
+    matrix : matrix
+}
+
+let lastTime     = 0
+let dropCounter  = 0
+let dropInterval = 1000
 
 function createMatrix(w,h) {
     const matrix = []
@@ -21,6 +36,8 @@ function createMatrix(w,h) {
 function draw(player) {
     ctx.fillStyle = '#000'
     ctx.fillRect(0,0, canvas.width, canvas.height)
+
+    drawMatrix(arena,{x:0,y:0})
     drawMatrix(player.matrix, player.pos)
 }
 
@@ -35,6 +52,21 @@ function drawMatrix(matrix, offset) {
     })
 }
 
+function collide(arena, player) {
+    const [m,o] = [player.matrix, player.pos]
+    for (let y=0;y<m.length;++y) {
+        for (let x=0; x < m[y].length; ++x) {
+            let isNotZero = m[y][x] > 0;
+            let arenaYPos = arena[y+o.y]
+
+            if( isNotZero && ( arenaYPos && arenaYPos[x+o.x] ) !==0 ) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
 // this to trap the matrix within the arena
 function merge(arena, player) {
     player.matrix.forEach((row,y)=>{
@@ -46,24 +78,10 @@ function merge(arena, player) {
     })
 }
 
-// merge(arena,player)
-// console.log(arena)
 
-// 20 height
-// 12 wide
-const arena = createMatrix(12,20)
-// console.table(arena)
-const player = {
-    pos : {x:5, y:2},
-    matrix : matrix
-}
-
-let lastTime     = 0
-let dropCounter  = 0
-let dropInterval = 1000
 function update(time=0) {
     const deltaTime = time - lastTime
-    lastTime = time
+           lastTime = time
 
     dropCounter += deltaTime
     if(dropCounter > dropInterval) {
@@ -76,11 +94,22 @@ function update(time=0) {
 
 function playerDrop() {
     player.pos.y++
+        //console.log(player.pos)
+    if (collide(arena,player)) {
+        // move player up
+        player.pos.y--
+
+        // merge the arena and player
+        merge(arena,player)
+
+        // restart from top
+        player.pos.y=0
+        console.log(1)
+    }
     dropCounter = 0
 }
 
 document.addEventListener('keydown', e => {
-    console.log(e)
     if(e.keyCode === 37) {
         player.pos.x--
     }
