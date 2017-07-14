@@ -49,6 +49,15 @@ function update(time=0) {
     requestAnimationFrame(update)
 }
 
-draw(player)
+document.addEventListener('keydown', e => {
+    console.log(e)
+    if(e.keyCode === 37) {
+        player.pos.x--
+    }
+    if(e.keyCode === 39) {
+        player.pos.x++
+    }
+})
+
 update()
 
