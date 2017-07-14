@@ -3,8 +3,6 @@ const ctx = canvas.getContext('2d')
 
 ctx.scale(20,20)
 
-ctx.fillStyle = '#000'
-ctx.fillRect(0,0, canvas.width, canvas.height)
 
 const matrix = [
     [0,0,0],
@@ -13,6 +11,8 @@ const matrix = [
 ]
 
 function draw(player) {
+    ctx.fillStyle = '#000'
+    ctx.fillRect(0,0, canvas.width, canvas.height)
     drawMatrix(player.matrix, player.pos)
 }
 
@@ -32,5 +32,12 @@ const player = {
     matrix : matrix
 }
 
+function update(time=0) {
+    // console.log(time)
+    draw(player)
+    requestAnimationFrame(update)
+}
+
 draw(player)
+update()
 
