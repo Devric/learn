@@ -32,8 +32,19 @@ const player = {
     matrix : matrix
 }
 
+let lastTime     = 0
+let dropCounter  = 0
+let dropInterval = 1000
 function update(time=0) {
-    // console.log(time)
+    const deltaTime = time - lastTime
+    lastTime = time
+
+    dropCounter += deltaTime
+    if(dropCounter > dropInterval) {
+        player.pos.y++
+            dropCounter = 0
+    }
+
     draw(player)
     requestAnimationFrame(update)
 }
