@@ -104,17 +104,23 @@ function playerDrop() {
 
         // restart from top
         player.pos.y=0
-        console.log(1)
     }
     dropCounter = 0
 }
 
+function playerMove(dir) {
+    player.pos.x += dir
+    if (collide(arena, player)) {
+        player.pos.x -= dir
+    }
+}
+
 document.addEventListener('keydown', e => {
     if(e.keyCode === 37) {
-        player.pos.x--
+        playerMove(-1)
     }
     if(e.keyCode === 39) {
-        player.pos.x++
+        playerMove(1)
     }
     if(e.keyCode === 40) {
         playerDrop()
