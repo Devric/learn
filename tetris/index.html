@@ -3,10 +3,29 @@
     <head>
         <meta charset="UTF-8">
         <title>Tetris</title>
+        <style>
+            .clearfix:before,.clearfix:after { content: " "; display: table;}
+            .clearfix:after { clear: both;}
+            .clearfix {*zoom: 1;}
+
+            #wrap {
+                display: block;
+                margin: 0 auto;
+                width: 300px;
+            }
+            #tetris {
+                float:left
+            }
+            #score { 
+                float:right
+            }
+        </style>
     </head>
     <body>
-        <div id="score"></div>
-        <canvas id="tetris" width="240" height="400"></canvas>
+        <div id="wrap" class="clearfix">
+            <canvas id="tetris" width="240" height="400"></canvas>
+            <div id="score"></div>
+        </div>
         <script src="./index.js"></script>
     </body>
 </html>
