@@ -152,8 +152,8 @@ class Tetris {
             // move player up
             self.player.pos.y--
 
-                // merge the arena and player
-                self.merge(self.arena,self.player)
+            // merge the arena and player
+            self.merge(self.arena,self.player)
             self.playerReset()
             self.arenaSweep()
 
