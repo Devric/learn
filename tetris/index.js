@@ -73,6 +73,25 @@ function createPiece(type) {
     }
 }
 
+function arenaSweep() {
+    outer: for (let y = arena.length - 1; y > 0; --y) {
+        for (let x = 0; x < arena[y].length; ++x) {
+            if ( arena[y][x] === 0 ) {
+                continue outer;
+            }
+        }
+
+        //          REMOVE arena row out at 'y' pos, and fill it with 0
+        const row = arena.splice(y,1)[0].fill(0)
+
+        // add it from the top
+        arena.unshift(row)
+
+        // offset y
+        y++
+    }
+}
+
 function playerReset() {
     const pieces = "ILJOTSZ"
     // randomize player piece
@@ -174,6 +193,7 @@ function playerDrop() {
         // merge the arena and player
         merge(arena,player)
         playerReset()
+        arenaSweep()
 
         // restart from top
         player.pos.y=0
