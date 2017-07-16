@@ -64,17 +64,25 @@ function createPiece(type) {
     }
 }
 
-// merge(arena,player)
+function playerReset() {
+    const pieces = "ILJOTSZ"
+    // randomize player piece
+    player.matrix = createPiece(pieces[ pieces.length * Math.random() | 0 ])
+
+    player.pos.y = 0
+    player.pos.x = ( arena[0].length / 2 | 0 ) - ( player.matrix[0].length / 2 | 0 )
+}
+
 // console.log(arena)
 
 // 20 height
 // 12 wide
 let arena = createMatrix(12,20)
 // console.table(arena)
-let player = {
-    pos : {x:5, y:2},
-    matrix : matrix
-}
+
+// init player
+let player = {pos:{},matrix:""}
+playerReset()
 
 let lastTime     = 0
 let dropCounter  = 0
@@ -156,6 +164,7 @@ function playerDrop() {
 
         // merge the arena and player
         merge(arena,player)
+        playerReset()
 
         // restart from top
         player.pos.y=0
