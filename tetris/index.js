@@ -3,10 +3,6 @@ const ctx = canvas.getContext('2d')
 
 ctx.scale(20,20)
 
-const matrix = [
-    [0,0,0],
-    [1,1,1],
-    [0,1,0],
 const colors = [
     null,
     'red',
