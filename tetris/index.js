@@ -69,7 +69,13 @@ function createPiece(type) {
     }
 }
 
+const scoreEl = document.getElementById('score')
+function updateScore(bonus = 0 ) {
+    scoreEl.innerText = player.score + (bonus * 10)
+}
+
 function arenaSweep() {
+    let rowCount = 1
     outer: for (let y = arena.length - 1; y > 0; --y) {
         for (let x = 0; x < arena[y].length; ++x) {
             if ( arena[y][x] === 0 ) {
@@ -85,6 +91,9 @@ function arenaSweep() {
 
         // offset y
         y++
+
+        player.score += rowCount * 10;
+        rowCount *= 2;
     }
 }
 
@@ -95,6 +104,13 @@ function playerReset() {
 
     player.pos.y = 0
     player.pos.x = ( arena[0].length / 2 | 0 ) - ( player.matrix[0].length / 2 | 0 )
+
+    // when it is full
+    if (collide(arena, player)) {
+        arena.forEach( row => row.fill(0) )
+        player.score = 0
+        updateScore()
+    }
 }
 
 // console.log(arena)
@@ -105,7 +121,7 @@ let arena = createMatrix(12,20)
 // console.table(arena)
 
 // init player
-let player = {pos:{},matrix:""}
+let player = {pos:{},matrix:"",score:0}
 playerReset()
 
 let lastTime     = 0
@@ -194,6 +210,8 @@ function playerDrop() {
         // restart from top
         player.pos.y=0
     }
+
+    updateScore()
     dropCounter = 0
 }
 
