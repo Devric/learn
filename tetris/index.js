@@ -9,6 +9,61 @@ const matrix = [
     [0,1,0],
 ]
 
+function createPiece(type) {
+    switch (type) {
+        case "T":
+            return  [
+                [0,0,0],
+                [1,1,1],
+                [0,1,0],
+            ]
+        break;
+        case "O":
+            return  [
+                [1,1],
+                [1,1],
+            ]
+        break;
+        case "L":
+            return  [
+                [0,1,0],
+                [0,1,0],
+                [0,1,1],
+            ]
+        break;
+        case "J":
+            return  [
+                [0,1,0],
+                [0,1,0],
+                [1,1,0],
+            ]
+        break;
+        case "I":
+            return  [
+                [0,1,0,0],
+                [0,1,0,0],
+                [0,1,0,0],
+                [0,1,0,0],
+            ]
+        break;
+        case "S":
+            return  [
+                [0,1,1],
+                [1,1,0],
+                [0,0,0],
+            ]
+        break;
+        case "Z":
+            return  [
+                [1,1,0],
+                [0,1,1],
+                [0,0,0],
+            ]
+        break;
+
+    }
+}
+
 // merge(arena,player)
 // console.log(arena)
 
