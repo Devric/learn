@@ -7,6 +7,15 @@ const matrix = [
     [0,0,0],
     [1,1,1],
     [0,1,0],
+const colors = [
+    null,
+    'red',
+    'blue',
+    'purple',
+    'orange',
+    'pink',
+    'yellow',
+    'green',
 ]
 
 function createPiece(type) {
@@ -20,43 +29,43 @@ function createPiece(type) {
         break;
         case "O":
             return  [
-                [1,1],
-                [1,1],
+                [2,2],
+                [2,2],
             ]
         break;
         case "L":
             return  [
-                [0,1,0],
-                [0,1,0],
-                [0,1,1],
+                [0,3,0],
+                [0,3,0],
+                [0,3,3],
             ]
         break;
         case "J":
             return  [
-                [0,1,0],
-                [0,1,0],
-                [1,1,0],
+                [0,4,0],
+                [0,4,0],
+                [4,4,0],
             ]
         break;
         case "I":
             return  [
-                [0,1,0,0],
-                [0,1,0,0],
-                [0,1,0,0],
-                [0,1,0,0],
+                [0,5,0,0],
+                [0,5,0,0],
+                [0,5,0,0],
+                [0,5,0,0],
             ]
         break;
         case "S":
             return  [
-                [0,1,1],
-                [1,1,0],
+                [0,6,6],
+                [6,6,0],
                 [0,0,0],
             ]
         break;
         case "Z":
             return  [
-                [1,1,0],
-                [0,1,1],
+                [7,7,0],
+                [0,7,7],
                 [0,0,0],
             ]
         break;
@@ -108,7 +117,7 @@ function drawMatrix(matrix, offset) {
     matrix.forEach((row,y) => {
         row.forEach((value, x) => {
             if (value !==0) {
-                ctx.fillStyle = 'red'
+                ctx.fillStyle = colors[value]
                 ctx.fillRect(x + offset.x, y + offset.y ,1,1)
             }
         }) 
