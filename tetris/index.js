@@ -116,7 +116,18 @@ function playerMove(dir) {
 }
 
 function playerRotate(dir) {
+    const pos=player.pos.x
+    let offset=1
     rotate(player.matrix, dir)
+    while(collide(arena, player)) {
+        player.pos.x += offset
+        offset = -(offset + ( offset > 0 ? 1 : -1 ));
+        if (offset > player.matrix[0].length) {
+            rotate(player.matrix, -dir)
+            player.pos.x = pos
+            return
+        }
+    }
 }
 
 function rotate(matrix,dir){
@@ -140,24 +151,23 @@ function rotate(matrix,dir){
 }
 
 document.addEventListener('keydown', e => {
-    if(e.keyCode === 37) {
-        playerMove(-1)
+    switch ( e.keyCode ) {
+        case 37: // left
+            playerMove(-1)
+        break;
+        case 39: // right
+            playerMove(1)
+        break;
+        case 40: // down
+            playerDrop()
+        break;
+        case 81: // w
+            playerRotate(-1)
+        break;
+        case 87: // q
+            playerRotate(1)
+        break;
     }
-    if(e.keyCode === 39) {
-        playerMove(1)
-    }
-    if(e.keyCode === 40) {
-        playerDrop()
-    }
-    // w
-    if(e.keyCode === 81) {
-        playerRotate(-1)
-    }
-    // q
-    if(e.keyCode === 87) {
-        playerRotate(1)
-    }
-    
 })
 
 update()
