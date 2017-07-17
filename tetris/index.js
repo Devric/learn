@@ -1,3 +1,35 @@
+class Player {
+    constructor() {
+        this.pos    = {}
+        this.matrix = ""
+        this.score  = 0
+    }
+
+    move(dir, collide,arena) {
+        var player = this
+        player.pos.x += dir
+        if (collide(arena, player)) {
+            player.pos.x -= dir
+        }
+    }
+
+    rotate(dir, rotate, collide, arena) {
+        var player=this
+        const pos=player.pos.x
+        let offset=1
+        rotate(player.matrix, dir)
+        while(collide(arena, player)) {
+            player.pos.x += offset
+            offset = -(offset + ( offset > 0 ? 1 : -1 ));
+            if (offset > player.matrix[0].length) {
+                rotate(player.matrix, -dir)
+                player.pos.x = pos
+                return
+            }
+        }
+    }
+}
+
 class Tetris {
     constructor() {
         var self    = this
@@ -24,13 +56,13 @@ class Tetris {
             'green',
         ]
 
-        this.player = {pos:{},matrix:"",score:0}
+        this.player = new Player()
         this.scoreEl = document.getElementById('score')
 
         // init player
         self.playerReset()
         self.init()
-        self.update()
+        self.updateFrame()
         self.updateScore()
     }
 
@@ -39,11 +71,11 @@ class Tetris {
         document.addEventListener('keydown', e => {
             switch ( e.keyCode ) {
                 case 37: // left
-                    self.playerMove(-1)
+                    self.player.move(-1, self.collide, self.arena)
                 break;
 
                 case 39: // right
-                    self.playerMove(1)
+                    self.player.move(1, self.collide, self.arena)
                 break;
 
                 case 40: // down
@@ -55,11 +87,11 @@ class Tetris {
                 break;
 
                 case 81: // w
-                    self.playerRotate(-1)
+                    self.player.rotate(-1, self.rotate, self.collide, self.arena)
                 break;
 
                 case 87: // q
-                    self.playerRotate(1)
+                    self.player.rotate(1, self.rotate, self.collide, self.arena)
                 break;
             }
         })
@@ -201,7 +233,7 @@ class Tetris {
         return false
     }
 
-    update(time=0) {
+    updateFrame(time=0) {
         var self=this
         const deltaTime = time - self.lastTime
         self.lastTime = time
@@ -212,12 +244,12 @@ class Tetris {
         }
 
         self.draw(self.player)
-        requestAnimationFrame(self.update.bind(this))
+        requestAnimationFrame(self.updateFrame.bind(this))
     }
 
     draw(player) {
         var self=this
-        self.ctx.fillStyle = '#000'
+        self.ctx.fillStyle = '#eee'
         self.ctx.fillRect(0,0, self.canvas.width, self.canvas.height)
         self.ctx.quadraticCurveTo (90, 10, 90, 20)
 
@@ -235,22 +267,6 @@ class Tetris {
                 }
             }) 
         })
-    }
-
-    playerRotate(dir) {
-        var self=this
-        const pos=self.player.pos.x
-        let offset=1
-        self.rotate(self.player.matrix, dir)
-        while(self.collide(self.arena, self.player)) {
-            self.player.pos.x += offset
-            offset = -(offset + ( offset > 0 ? 1 : -1 ));
-            if (offset > self.player.matrix[0].length) {
-                self.rotate(self.player.matrix, -dir)
-                player.pos.x = pos
-                return
-            }
-        }
     }
 
     rotate(matrix,dir){
