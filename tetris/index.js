@@ -49,6 +49,20 @@ class Arena {
         })
     }
 
+    collide(player) {
+        const [m,o] = [player.matrix, player.pos]
+        for (let y=0;y<m.length;++y) {
+            for (let x=0; x < m[y].length; ++x) {
+                let isNotZero = m[y][x] > 0;
+                let arenaYPos = this.matrix[y+o.y]
+
+                if( isNotZero && ( arenaYPos && arenaYPos[x+o.x] ) !==0 ) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     clear() {
         this.matrix.forEach( row => row.fill(0) )
@@ -74,11 +88,11 @@ class Player {
         document.addEventListener('keydown', e => {
             switch ( e.keyCode ) {
                 case 37: // left
-                    player.move(-1, player.Game.collide, player.Game.arena)
+                    player.move(-1)
                 break;
 
                 case 39: // right
-                    player.move(1, player.Game.collide, player.Game.arena)
+                    player.move(1)
                 break;
 
                 case 40: // down
@@ -90,30 +104,30 @@ class Player {
                 break;
 
                 case 81: // w
-                    player.rotate(-1, player.Game.rotate, player.Game.collide, player.Game.arena)
+                    player.rotate(-1)
                 break;
 
                 case 87: // q
-                    player.rotate(1, player.Game.rotate, player.Game.collide, player.Game.arena)
+                    player.rotate(1)
                 break;
             }
         })
     }
 
-    move(dir, collide,arena) {
+    move(dir) {
         var player = this
         player.pos.x += dir
-        if (collide(arena, player)) {
+        if (player.Game.Arena.collide(player)) {
             player.pos.x -= dir
         }
     }
 
-    rotate(dir, rotate, collide, arena) {
+    rotate(dir) {
         var player=this
         const pos=player.pos.x
         let offset=1
         player._rotate(player.matrix, dir)
-        while(collide(arena, player)) {
+        while(player.Game.Arena.collide(player)) {
             player.pos.x += offset
             offset = -(offset + ( offset > 0 ? 1 : -1 ));
             if (offset > player.matrix[0].length) {
@@ -121,21 +135,6 @@ class Player {
                 player.pos.x = pos
                 return
             }
-        }
-    }
-
-    reset() {
-        var player=this
-
-        player.matrix = player.Game.createPiece()
-        player.pos.y  = 0
-        player.pos.x  = ( player.Game.arena[0].length / 2 | 0 ) - ( player.matrix[0].length / 2 | 0 )
-
-        // when it is full
-        if (player.Game.collide(player.Game.arena, player)) {
-            player.Game.Arena.clear()
-            player.score = 0
-            player.Game.updateScore()
         }
     }
 
@@ -159,10 +158,25 @@ class Player {
         }
     }
 
+    reset() {
+        var player=this
+
+        player.matrix = player.Game.createPiece()
+        player.pos.y  = 0
+        player.pos.x  = ( player.Game.arena[0].length / 2 | 0 ) - ( player.matrix[0].length / 2 | 0 )
+
+        // when it is full
+        if (player.Game.Arena.collide(player)) {
+            player.Game.Arena.clear()
+            player.score = 0
+            player.Game.updateScore()
+        }
+    }
+
     drop() {
         var player = this
         player.pos.y++;
-        if (player.Game.collide(player.Game.arena,player)) {
+        if (player.Game.Arena.collide(player)) {
             // move player up
             player.pos.y--
 
@@ -179,11 +193,11 @@ class Player {
 
     quickDrop() {
         var player = this
-        while ( !player.Game.collide(player.Game.arena,player) ) {
+        while ( !player.Game.Arena.collide(player) ) {
             player.pos.y++;
         }
 
-        if ( player.Game.collide(player.Game.arena,player) ) {
+        if ( player.Game.Arena.collide(player) ) {
             // move player up
             player.pos.y--
 
@@ -294,21 +308,6 @@ class Tetris {
         scoreEl.innerText = player.score + (bonus * 10)
     }
 
-
-    collide(arena, player) {
-        const [m,o] = [player.matrix, player.pos]
-        for (let y=0;y<m.length;++y) {
-            for (let x=0; x < m[y].length; ++x) {
-                let isNotZero = m[y][x] > 0;
-                let arenaYPos = arena[y+o.y]
-
-                if( isNotZero && ( arenaYPos && arenaYPos[x+o.x] ) !==0 ) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
 
     updateFrame(time=0) {
         var self=this
