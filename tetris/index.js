@@ -1,3 +1,17 @@
+class Arena {
+    constructor(w,h) {
+        this.matrix = this.createMatrix(w,h)
+    }
+
+    createMatrix(w,h) {
+        const matrix = []
+        while (h--) {
+            matrix.push(new Array(w).fill(0))
+        }
+        return matrix
+    }
+}
+
 class Player {
     constructor(Game) {
         this.Game   = Game
@@ -164,7 +178,7 @@ class Tetris {
 
         // 20 height
         // 12 wide
-        this.arena    = self.createMatrix(12,20)
+        this.arena    = new Arena(12,20).matrix
         this.lastTime = 0
 
         this.colors = [
@@ -319,13 +333,6 @@ class Tetris {
         }
     }
 
-    createMatrix(w,h) {
-        const matrix = []
-        while (h--) {
-            matrix.push(new Array(w).fill(0))
-        }
-        return matrix
-    }
 }
 
 new Tetris()
