@@ -1,6 +1,8 @@
 class Arena {
-    constructor(w,h) {
+    constructor(w,h, Game) {
         this.matrix = this.createMatrix(w,h)
+        this.Game   = Game
+        return this
     }
 
     createMatrix(w,h) {
@@ -9,6 +11,47 @@ class Arena {
             matrix.push(new Array(w).fill(0))
         }
         return matrix
+    }
+
+    sweep() {
+        var self=this
+        let rowCount = 1
+        outer: for (let y = this.matrix.length - 1; y > 0; --y) {
+            for (let x = 0; x < this.matrix[y].length; ++x) {
+                if ( this.matrix[y][x] === 0 ) {
+                    continue outer;
+                }
+            }
+
+            // REMOVE arena row out at 'y' pos, and fill it with 0
+            const row = this.matrix.splice(y,1)[0].fill(0)
+
+            // add it from the top
+            this.matrix.unshift(row)
+
+            // offset y
+            y++
+
+            this.Game.player.score += rowCount * 10;
+            rowCount *= 2;
+            this.Game.updateScore()
+        }
+    }
+
+    // this to trap the matrix within the arena
+    merge(player) {
+        player.matrix.forEach((row,y)=>{
+            row.forEach( (value, x) => {
+                if (value !==0) {
+                    this.matrix[y+player.pos.y][x+player.pos.x] = value
+                }
+            })
+        })
+    }
+
+
+    clear() {
+        this.matrix.forEach( row => row.fill(0) )
     }
 }
 
@@ -90,7 +133,7 @@ class Player {
 
         // when it is full
         if (player.Game.collide(player.Game.arena, player)) {
-            player.Game.arena.forEach( row => row.fill(0) )
+            player.Game.Arena.clear()
             player.score = 0
             player.Game.updateScore()
         }
@@ -124,9 +167,9 @@ class Player {
             player.pos.y--
 
             // merge the arena and player
-            player.Game.merge(player.Game.arena,player)
+            player.Game.Arena.merge(player)
             player.reset()
-            player.Game.arenaSweep()
+            player.Game.Arena.sweep()
 
             // restart from top
             player.pos.y=0
@@ -145,9 +188,9 @@ class Player {
             player.pos.y--
 
             // merge the arena and player
-            player.Game.merge(player.Game.arena,player)
+            player.Game.Arena.merge(player)
             player.reset()
-            player.Game.arenaSweep()
+            player.Game.Arena.sweep()
 
             // restart from top
             player.pos.y=0
@@ -178,8 +221,11 @@ class Tetris {
 
         // 20 height
         // 12 wide
-        this.arena    = new Arena(12,20).matrix
+        this.Arena    = new Arena(12,20, this)
+        this.arena    = this.Arena.matrix
         this.lastTime = 0
+
+        this.player = new Player(this)
 
         this.colors = [
             null,
@@ -192,7 +238,6 @@ class Tetris {
             'green',
         ]
 
-        this.player = new Player(this)
 
         // init player
         self.player.reset()
@@ -249,16 +294,6 @@ class Tetris {
         scoreEl.innerText = player.score + (bonus * 10)
     }
 
-    // this to trap the matrix within the arena
-    merge(arena, player) {
-        player.matrix.forEach((row,y)=>{
-            row.forEach( (value, x) => {
-                if (value !==0) {
-                    arena[y+player.pos.y][x+player.pos.x] = value
-                }
-            })
-        })
-    }
 
     collide(arena, player) {
         const [m,o] = [player.matrix, player.pos]
@@ -307,33 +342,7 @@ class Tetris {
             }) 
         })
     }
-
-    arenaSweep() {
-        var self=this
-        let rowCount = 1
-        outer: for (let y = self.arena.length - 1; y > 0; --y) {
-            for (let x = 0; x < self.arena[y].length; ++x) {
-                if ( self.arena[y][x] === 0 ) {
-                    continue outer;
-                }
-            }
-
-            // REMOVE arena row out at 'y' pos, and fill it with 0
-            const row = self.arena.splice(y,1)[0].fill(0)
-
-            // add it from the top
-            self.arena.unshift(row)
-
-            // offset y
-            y++
-
-            self.player.score += rowCount * 10;
-            rowCount *= 2;
-            self.updateScore()
-        }
-    }
-
 }
 
-new Tetris()
+var T = new Tetris()
 
