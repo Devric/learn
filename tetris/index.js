@@ -112,6 +112,8 @@ class Player {
                 break;
             }
         })
+
+        this.reset()
     }
 
     move(dir) {
@@ -254,7 +256,6 @@ class Tetris {
 
 
         // init player
-        self.player.reset()
         self.updateFrame()
         self.updateScore()
     }
@@ -343,5 +344,6 @@ class Tetris {
     }
 }
 
-var T = new Tetris()
+var T1 = new Tetris('tetris1','score1')
+var T2 = new Tetris('tetris2','score2')
 
