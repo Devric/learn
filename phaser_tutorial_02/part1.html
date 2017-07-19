@@ -27,7 +27,9 @@ function preload() {
 }
 
 var platforms,
-    player
+    player,
+    stars
+;
 function create() {
 
     // using Arcade physics
@@ -74,6 +76,24 @@ function create() {
     // right cycle are 5-8 (4 sprites)
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+    // add stars
+    stars = game.add.group()
+    stars.enableBody = true
+
+    // place them randomly
+    for (var i=0; i<12; i++) {
+        // create star inside star group, spaced out 70 pixels apart, start from the top(0)
+        var star = stars.create(i*70,0,'star')
+
+        // let gravity do the work
+        star.body.gravity.y = 60
+
+        // give each star a slightly random bounce
+        star.body.bounce.y = 0.7+Math.random() * 0.2
+    }
+
+
 }
 
 function update() {
@@ -103,6 +123,13 @@ function update() {
     {
         player.body.velocity.y=-350
     }
+    game.physics.arcade.collide(stars, platforms);
+    game.physics.arcade.overlap(player, stars, collectStar, null, this);
+}
+
+// Removes the star from the screen, when collide
+function collectStar (player, star) {
+    star.kill();
 }
 
 </script>
