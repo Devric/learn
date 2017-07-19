@@ -1,1 +1,2 @@
+requires server ( http-server )
 http://phaser.io/tutorials/making-your-first-phaser-game
