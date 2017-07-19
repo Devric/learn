@@ -15,6 +15,7 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var cursors
 
 function preload() {
     game.load.image('sky'    , 'assets/sky.png')
@@ -22,6 +23,7 @@ function preload() {
     game.load.image('star'   , 'assets/star.png')
 
     game.load.spritesheet('dude'  , 'assets/dude.png', 32,48)
+    cursors = game.input.keyboard.createCursorKeys();
 }
 
 var platforms,
@@ -76,6 +78,31 @@ function create() {
 
 function update() {
     var hitPlatform = game.physics.arcade.collide(player, platforms)
+
+    // resets the players velocity ( movement )
+    player.body.velocity.x=0
+
+    if (cursors.left.isDown)
+    {
+        player.body.velocity.x = -150
+        player.animations.play('left')
+    }
+    else if (cursors.right.isDown) {
+        player.body.velocity.x = 150
+        player.animations.play('right')
+    }
+    else
+    {
+        player.animations.stop()
+        player.frame=4
+    }
+
+    // allow player to jump if they are touching the ground
+    // hitPlatform(if it is colliding with the platform)
+    if (cursors.up.isDown && player.body.touching.down && hitPlatform) 
+    {
+        player.body.velocity.y=-350
+    }
 }
 
 </script>
