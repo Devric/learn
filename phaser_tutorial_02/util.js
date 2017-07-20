@@ -21,3 +21,9 @@ Util.assetLoader = function assetLoader(game, list){
         }
     }
 }
+Util.gameStateLoader = function assetLoader(game, states){
+    for (var state in states) {
+        game.state.add(state, states[state])
+    }
+}
+
