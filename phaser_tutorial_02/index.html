@@ -30,6 +30,9 @@
         </style>
     </head>
     <body>
-
+        <script>
+            // Inspector
+        var script = document.createElement('script'); script.src = "phaser-inspector.js"; document.getElementsByTagName('head')[0].appendChild(script); function phaserInspectorInject(){ if (Phaser.Plugin.Inspector) Phaser.GAMES[0].plugins.add(Phaser.Plugin.Inspector); else setTimeout(phaserInspectorInject);  } setTimeout(phaserInspectorInject);
+        </script>
     </body>
 </html>
