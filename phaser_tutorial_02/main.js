@@ -1,16 +1,8 @@
 var game = new Phaser.Game(640,360, Phaser.AUTO)
 
-var GameState = {
-    prelod: ()=>{
-
-    },
-    create: ()=>{
-
-    },
-    update: ()=>{
-
-    },
+console.log(GameGlobal)
+for (var state in GameGlobal.GameStates) {
+    game.state.add(state, GameGlobal.GameStates[state])
 }
 
-game.state.add('GameState', GameState)
-game.state.start('GameState')
+game.state.start('mainMenu')
