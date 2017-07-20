@@ -1,10 +1,9 @@
-GameGlobal.GameStates.town = class StateTown {
+GameGlobal.GameStates.stage = class StateStage {
     constructor() {
-        console.log('==>init:GameState:town')
+        console.log('==>init:GameState:stage')
 
         this.assets = {
             background : { type:'image',source:'assets/sky.png' },
-            btn_fight : { type:'image',source:'assets/btn_fight.jpg' },
         }
 
         this.groups = {}
@@ -25,11 +24,7 @@ GameGlobal.GameStates.town = class StateTown {
     }
     create(){
         this.background = this.game.add.sprite(0,0, 'background')
-        this.game.add.text(16,16,'Town',{fontSize:'32px',fill:'#000'})
-
-        this.button = game.add.button(this.game.world.centerX /2, 100, 'btn_fight', ()=>{
-            this.game.state.start('stage')
-        }, this, 2,1,0 )
+        this.game.add.text(16,16,'Stage Fight!',{fontSize:'32px',fill:'#000'})
     }
     update(){
 
