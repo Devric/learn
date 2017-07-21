@@ -35,12 +35,14 @@ GameGlobal.GameStates.stage = class StateStage {
         Util.assetLoader(this.game, this.assets)
     }
     create(){
+        this.game.world.setBounds(0,0,800,400)
         this.StageAsset.background = this.game.add.tileSprite(0,0, 640, 360, 'background')
         this.StageAsset.background.smoothed = false
 
         this.game.add.text(16,16,'Stage Fight!',{fontSize:'32px',fill:'#000'})
 
         this.wolf = this.game.add.sprite(100,100,'wolf')
+        this.wolf.fixedToCamera = true
         this.wolfWalkLeft  = this.wolf.animations.add('walkLeft',[0,1])
         this.wolfWalkRight = this.wolf.animations.add('walkRight',[2,3])
         this.wolfWalkRight.play(5,true)
@@ -53,16 +55,16 @@ GameGlobal.GameStates.stage = class StateStage {
 
         // movement
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-            this.game.world.pivot.y -= 5;  
+            this.game.camera.y -= 5;  
         }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-            this.game.world.pivot.y += 5;    
+            this.game.camera.y += 5;    
         }
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-            this.game.world.pivot.x -= 5;
+            this.game.camera.x -= 5;
         }
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-            this.game.world.pivot.x += 5;
+            this.game.camera.x += 5;
         }
 
     }
