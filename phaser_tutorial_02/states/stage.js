@@ -17,6 +17,7 @@ GameGlobal.GameStates.stage = class StateStage {
         this.scene = {
 
         }
+
     }
     preload(){
         // Load Assets

@@ -27,7 +27,7 @@ GameGlobal.GameStates.town = class StateTown {
         this.background = this.game.add.sprite(0,0, 'background')
         this.game.add.text(16,16,'Town',{fontSize:'32px',fill:'#000'})
 
-        this.button = game.add.button(this.game.world.centerX /2, 100, 'btn_fight', ()=>{
+        this.btn_startStage = game.add.button(this.game.world.centerX /2, 100, 'btn_fight', ()=>{
             this.game.state.start('stage')
         }, this, 2,1,0 )
     }
