@@ -23,7 +23,7 @@ GameGlobal.GameStates.stage = class StateStage {
         }
 
         this.scene = {
-
+            zoom : 1
         }
 
     }
@@ -46,6 +46,8 @@ GameGlobal.GameStates.stage = class StateStage {
         this.wolfWalkLeft  = this.wolf.animations.add('walkLeft',[0,1])
         this.wolfWalkRight = this.wolf.animations.add('walkRight',[2,3])
         this.wolfWalkRight.play(5,true)
+
+        this.game.world.setBounds(-1000,-1000,2000,2000)
     }
     update(){
         // inifite scroll background 
@@ -66,7 +68,14 @@ GameGlobal.GameStates.stage = class StateStage {
         else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
             this.game.camera.x += 5;
         }
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.Q)) {
+            if (this.scene.zoom < 10) this.scene.zoom += .2
+        }
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+            if (this.scene.zoom > 1) this.scene.zoom -= .2
+        }
 
+        this.game.world.scale.setTo(this.scene.zoom)
     }
 
 }
