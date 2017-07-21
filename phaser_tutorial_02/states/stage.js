@@ -35,7 +35,9 @@ GameGlobal.GameStates.stage = class StateStage {
         Util.assetLoader(this.game, this.assets)
     }
     create(){
-        this.background = this.game.add.sprite(0,0, 'background')
+        this.StageAsset.background = this.game.add.tileSprite(0,0, 640, 360, 'background')
+        this.StageAsset.background.smoothed = false
+
         this.game.add.text(16,16,'Stage Fight!',{fontSize:'32px',fill:'#000'})
 
         this.wolf = this.game.add.sprite(100,100,'wolf')
@@ -44,7 +46,12 @@ GameGlobal.GameStates.stage = class StateStage {
         this.wolfWalkRight.play(5,true)
     }
     update(){
+        if (this.wolfWalkRight.isPlaying)
+        {
+            this.StageAsset.background.tilePosition.x -=1
+        }
 
     }
+
 }
 
