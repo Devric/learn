@@ -46,9 +46,23 @@ GameGlobal.GameStates.stage = class StateStage {
         this.wolfWalkRight.play(5,true)
     }
     update(){
-        if (this.wolfWalkRight.isPlaying)
-        {
+        // inifite scroll background 
+        if (this.wolfWalkRight.isPlaying) {
             this.StageAsset.background.tilePosition.x -=1
+        }
+
+        // movement
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+            this.game.world.pivot.y -= 5;  
+        }
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+            this.game.world.pivot.y += 5;    
+        }
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+            this.game.world.pivot.x -= 5;
+        }
+        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+            this.game.world.pivot.x += 5;
         }
 
     }
