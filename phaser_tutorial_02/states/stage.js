@@ -8,6 +8,10 @@ GameGlobal.GameStates.stage = class StateStage {
             hero       : { type : 'sprite' , source : "assets/dude.png"   , width : 32 , height : 48 , fames : 9 , margin : 0 , spacing : 0 }
         }
 
+        this.settings = {
+            groundYPos : 250
+        }
+
         this.StageAsset = {
             background : null,
             wolf       : null,
@@ -42,9 +46,9 @@ GameGlobal.GameStates.stage = class StateStage {
 
         this.game.add.text(16,16,'Stage Fight!',{fontSize:'32px',fill:'#000'})
 
-        this.dude = this.game.add.sprite(100,100,'hero',4)
+        this.dude = this.game.add.sprite(100,this.settings.groundYPos,'hero',4)
 
-        this.wolf = this.game.add.sprite(500,100,'wolf')
+        this.wolf = this.game.add.sprite(500,this.settings.groundYPos+15,'wolf')
         this.wolf.fixedToCamera = true
         this.wolf.animations.add('walkLeft'  , [0 , 1])
         this.wolf.animations.add('walkRight' , [2 , 3])
