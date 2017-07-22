@@ -3,8 +3,9 @@ GameGlobal.GameStates.stage = class StateStage {
         console.log('==>init:GameState:stage')
 
         this.assets = {
-            background : { type : 'image'  , source : 'assets/sky.png' } ,
-            wolf       : { type : 'sprite' , source : "assets/baddie.png"  , width : 32 , height : 32 , fames :4 , margin : 0 , spacing : 0 }
+            background : { type : 'image'  , source : 'assets/sky.png' }  ,
+            wolf       : { type : 'sprite' , source : "assets/baddie.png" , width : 32 , height : 32 , fames : 4 , margin : 0 , spacing : 0 },
+            hero       : { type : 'sprite' , source : "assets/dude.png"   , width : 32 , height : 48 , fames : 9 , margin : 0 , spacing : 0 }
         }
 
         this.StageAsset = {
@@ -41,17 +42,19 @@ GameGlobal.GameStates.stage = class StateStage {
 
         this.game.add.text(16,16,'Stage Fight!',{fontSize:'32px',fill:'#000'})
 
-        this.wolf = this.game.add.sprite(100,100,'wolf')
+        this.dude = this.game.add.sprite(100,100,'hero',4)
+
+        this.wolf = this.game.add.sprite(500,100,'wolf')
         this.wolf.fixedToCamera = true
-        this.wolfWalkLeft  = this.wolf.animations.add('walkLeft',[0,1])
-        this.wolfWalkRight = this.wolf.animations.add('walkRight',[2,3])
-        this.wolfWalkRight.play(5,true)
+        this.wolf.animations.add('walkLeft'  , [0 , 1])
+        this.wolf.animations.add('walkRight' , [2 , 3])
+        this.wolf.animations.play('walkLeft',5,true)
 
         this.game.world.setBounds(-1000,-1000,2000,2000)
     }
     update(){
         // inifite scroll background 
-        if (this.wolfWalkRight.isPlaying) {
+        if (this.wolf.animations.getAnimation('walkLeft').isPlaying) {
             this.StageAsset.background.tilePosition.x -=1
         }
 
