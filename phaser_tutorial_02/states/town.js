@@ -30,6 +30,9 @@ GameGlobal.GameStates.town = class StateTown {
         this.btn_startStage = game.add.button(this.game.world.centerX /2, 100, 'btn_fight', ()=>{
             this.game.state.start('stage')
         }, this, 2,1,0 )
+
+        // this persist the change state with btn_startStage button
+        // this.game.stage.addChild(this.btn_startStage)
     }
     update(){
 
