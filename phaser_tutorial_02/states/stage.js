@@ -34,6 +34,7 @@ class Character extends Phaser.Sprite{
         this.hpBar.setText(this.hp.drop(50))
     }
 }
+
 class Hero extends Character{
     constructor(game,x,y, index=0) {
         //super(game, x,y,key,frame,group)
@@ -137,25 +138,29 @@ GameGlobal.GameStates.stage = class StateStage {
         // Load Assets
         Util.assetLoader(this.game, this.assets)
     }
-    create(){
-        this.game.world.setBounds(0,0,800,400)
-        this.StageAsset.background = this.game.add.tileSprite(0,0, 640, 360, 'background')
+    create(game){
+
+        // background
+        game.world.setBounds(0,0,800,400)
+        this.StageAsset.background = game.add.tileSprite(0,0, 640, 360, 'background')
         this.StageAsset.background.smoothed = false
 
-        this.groups.platforms = this.game.add.group()
+        // text
+        game.add.text(16,16,'Stage Fight!',{fontSize:'32px',fill:'#000'})
+
+        // ground
+        this.groups.platforms = game.add.group()
         this.groups.platforms.create(0, 298, 'ground').scale.setTo(2,2)
 
-        this.game.add.text(16,16,'Stage Fight!',{fontSize:'32px',fill:'#000'})
+        // this.dude = game.add.sprite(100,this.settings.groundYPos,'hero',4)
+        this.dude = new Hero(game, 100,this.settings.groundYPos)
 
-        // this.dude = this.game.add.sprite(100,this.settings.groundYPos,'hero',4)
-        this.dude = new Hero(this.game, 100,this.settings.groundYPos)
-
-        this.wolf = new Wolf(this.game, 500,this.settings.groundYPos+17)
+        this.wolf = new Wolf(game, 500,this.settings.groundYPos+17)
 
         // different colour
         // this.wolf.tint = Math.random() * 0xffffff;
 
-        this.game.world.setBounds(-1000,-1000,2000,2000)
+        game.world.setBounds(-1000,-1000,2000,2000)
 
     }
     update(){
@@ -168,27 +173,27 @@ GameGlobal.GameStates.stage = class StateStage {
         this.dude.update()
 
         // // movement
-        // if (this.game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-        //     this.game.camera.y -= 5;  
+        // if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+        //     game.camera.y -= 5;  
         // }
-        // else if (this.game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
-        //     this.game.camera.y += 5;    
+        // else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)) {
+        //     game.camera.y += 5;    
         // }
-        // if (this.game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
-        //     this.game.camera.x -= 5;
+        // if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+        //     game.camera.x -= 5;
         // }
-        // else if (this.game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
-        //     this.game.camera.x += 5;
+        // else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+        //     game.camera.x += 5;
         // }
 
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.Q)) {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.Q)) {
             if (this.scene.zoom < 10) this.scene.zoom += .2
         }
-        else if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
             if (this.scene.zoom > 1) this.scene.zoom -= .2
         }
 
-        this.game.world.scale.setTo(this.scene.zoom)
+        game.world.scale.setTo(this.scene.zoom)
     }
 }
 
