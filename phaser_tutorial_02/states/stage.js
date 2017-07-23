@@ -1,9 +1,37 @@
+class Status {
+    constructor(game,cfg) {
+        this.amount = 100
+        this.name   = 'hp'
+    }
+    add(amt){
+        return this.amount += amt
+    }
+    drop(amt){
+        return this.amount -= amt
+    }
+    get(){
+        return this.amount
+    }
+    showBar(){
+
+    }
+}
+
 class Character extends Phaser.Sprite{
     constructor(game,x,y,key) {
         //super(game, x,y,key,frame,group)
         super(game, x, y,key,0)
 
+        this.hp = new Status()
+        this.hpBar = game.add.text(x,y+40,this.hp.get(),{fontSize:'22px',fill:'#000'})
+
         game.add.existing(this)
+    }
+    heal() {
+        this.hpBar.setText(this.hp.add(50))
+    }
+    damaged() {
+        this.hpBar.setText(this.hp.drop(50))
     }
 }
 class Hero extends Character{
@@ -26,9 +54,11 @@ class Hero extends Character{
         switch (direction) {
             case "left":
                 this.animations.play('walkLeft',5,true)
+                this.damaged()
             break;
             case "right":
                 this.animations.play('walkRight',5,true)
+                this.heal()
             break;
             case "stop":
             default:
@@ -126,6 +156,7 @@ GameGlobal.GameStates.stage = class StateStage {
         // this.wolf.tint = Math.random() * 0xffffff;
 
         this.game.world.setBounds(-1000,-1000,2000,2000)
+
     }
     update(){
         // inifite scroll background 
